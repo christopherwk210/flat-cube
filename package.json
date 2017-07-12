@@ -1,0 +1,19 @@
+{
+  "name": "flat-cube",
+  "version": "1.0.0",
+  "description": "An online Rubik's Cube clone that only displays one side at a time.",
+  "scripts": {
+    "build": "gulp build.prod",
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christopherwk210/flat-cube.git"
+  },
+  "author": "Chris Anselmo <christopherwk210@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/christopherwk210/flat-cube/issues"
+  },
+  "homepage": "https://github.com/christopherwk210/flat-cube#readme"
+}
