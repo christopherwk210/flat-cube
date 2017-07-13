@@ -14,7 +14,7 @@
   /**
    * FlatCube constructor
    * @param {object} [e] Options object
-   * @param {Array<string>} [e.colors] The colors to use for the cube faces
+   * @param {Array<string>} [e.colors] CSS colors to use for the cube faces
    * @param {number} [e.width=3] Height of cube
    * @param {number} [e.height=3] Width of cube
    * @param {Element} [e.el=document.body] Element to append cube and controls to
@@ -22,6 +22,7 @@
   window.FlatCube = function(e) {
     e = e || {};
 
+    // Options
     this.colors = e.colors || [
       'red',
       'orange',
@@ -30,16 +31,22 @@
       'blue',
       'violet'
     ];
-
     this.width = e.width || 3;
     this.height = e.height || 3;
     this.el = e.el || document.body;
+
+    // Control
+    this.cubePieceElements = [];
+    this.lookingAt = 'front';
 
     // Set up cube data model
     this.cube = this.generateCubeModel();    
 
     // Create cube view
     this.createCubeView(this.width, this.height, this.el);
+
+    // Initial update
+    this.updateView();
   };
 
   /**
@@ -51,7 +58,10 @@
 
     for (var i = 0; i < faces.length; i++) {
       var face = faces[i];
-      cube.sides[face] = [i, i, i];
+      cube.sides[face] = [];
+      repeat(function() {
+        cube.sides[face].push([i, i, i])
+      }, 3);
     }
 
     return cube;
@@ -75,11 +85,17 @@
       leftButton.innerText = '⬅️';
       rowElement.appendChild(leftButton);
 
+      var pieceElements = [];
+
       repeat(function() {
         var piece = document.createElement('span');
         piece.className = 'piece';
         rowElement.appendChild(piece);
+        pieceElements.push(piece);
       }, width);
+
+      // Keep a reference to the elements
+      this.cubePieceElements.push(pieceElements);
 
       var rightButton = document.createElement('button');
       rightButton.innerText = '➡️';
@@ -100,7 +116,7 @@
 
     // Create each row
     for (var h = 0; h < height; h++) {
-      var row = createRow(h);
+      var row = createRow.bind(this, h)();
       container.appendChild(row);
     }
 
@@ -116,5 +132,20 @@
 
     // Append view to DOM
     el.appendChild(container);
+  };
+
+  /**
+   * Updates the pieces on the DOM to have the correct background according to the model
+   */
+  window.FlatCube.prototype.updateView = function() {
+    var currentFaceModel = this.cube.sides[this.lookingAt];
+
+    for (var h = 0; h < currentFaceModel.length; h++) {
+      for (var w = 0; w < currentFaceModel[h].length; w++) {
+        var currentPiece = this.cubePieceElements[h][w];
+        var colorIndex = currentFaceModel[h][w];
+        currentPiece.style.background = this.colors[colorIndex];
+      }
+    }
   };
 })();
