@@ -13,6 +13,32 @@
   }
 
   /**
+   * Returns a column of a 2D array as a new array, taken
+   * from https://stackoverflow.com/a/7848073/5952139
+   * @param {Array} matrix Array
+   * @param {number} col Column
+   */
+  var getCol = function(matrix, col) {
+    var column = [];
+    for (var i = 0; i < matrix.length; i++) {
+      column.push(matrix[i][col]);
+    }
+    return column;
+  }
+
+  /**
+   * Sets a column in a 2D array.
+   * @param {Array} matrix Array to set
+   * @param {number} col Column
+   * @param {Array} value Array of values to set, must be same height as matrix array
+   */
+  var setCol = function(matrix, col, value) {
+    for (var y = 0; y < matrix.length; y++) {
+      matrix[y][col] = value[y];
+    }
+  }
+
+  /**
    * FlatCube constructor
    * @param {object} [e] Options object
    * @param {Array<string>} [e.colors] CSS colors to use for the cube faces
@@ -168,6 +194,17 @@
 
         // Apply the correct background
         currentPiece.style.background = this.colors[colorIndex];
+      }
+    }
+  };
+
+  window.FlatCube.prototype.rotateColumn = function(col, direction) {
+    switch(this.lookingAt) {
+      case 'front': {
+        if (direction) {
+          console.log(this.cube.sides['top'][col]);
+        }
+        break;
       }
     }
   };
