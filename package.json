@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "An online Rubik's Cube clone that only displays one side at a time.",
   "scripts": {
-    "build": "gulp build.prod",
-    "start": "gulp"
+    "start": ""
   },
   "repository": {
     "type": "git",
