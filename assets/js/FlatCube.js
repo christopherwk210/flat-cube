@@ -7,7 +7,7 @@
   var repeat = function(cb, i) {
     var n = 0;
     while(n < i) {
-      cb();
+      cb(n);
       n++;
     }
   }
@@ -87,7 +87,7 @@
       leftButton.innerText = '⬅️';
       leftButton.setAttribute('data-row', row);
       leftButton.addEventListener('click', (function(e) {
-        console.log(this, e.srcElement)
+        console.log(this, e.srcElement);
       }).bind(this));
       rowElement.appendChild(leftButton);
 
@@ -109,7 +109,7 @@
       rightButton.innerText = '➡️';
       rightButton.setAttribute('data-row', row);
       rightButton.addEventListener('click', (function(e) {
-        console.log(this, e.srcElement)
+        console.log(this, e.srcElement);
       }).bind(this));
       rowElement.appendChild(rightButton);
 
@@ -119,9 +119,13 @@
     // Create top button row
     var topRowElement = document.createElement('div');
     topRowElement.className = 'row';
-    repeat(function() {
+    repeat(function(i) {
       var upButton = document.createElement('button');
       upButton.innerText = '⬆️';
+      upButton.setAttribute('data-col', i);
+      upButton.addEventListener('click', (function(e) {
+        console.log(this, e.srcElement);
+      }).bind(this));
       topRowElement.appendChild(upButton);
     }, width);
     container.appendChild(topRowElement);
@@ -135,9 +139,13 @@
     // Create bottom button row
     var bottomRowElement = document.createElement('div');
     bottomRowElement.className = 'row';
-    repeat(function() {
+    repeat(function(i) {
       var downButton = document.createElement('button');
       downButton.innerText = '⬇️';
+      downButton.setAttribute('data-col', i);
+      downButton.addEventListener('click', (function(e) {
+        console.log(this, e.srcElement);
+      }).bind(this));
       bottomRowElement.appendChild(downButton);
     }, width);
     container.appendChild(bottomRowElement);
