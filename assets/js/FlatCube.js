@@ -5,9 +5,10 @@
    * @param {number} i Iterations
    */
   var repeat = function(cb, i) {
-    while(i > 0) {
+    var n = 0;
+    while(n < i) {
       cb();
-      i--;
+      n++;
     }
   }
 
@@ -81,12 +82,18 @@
       var rowElement = document.createElement('div');
       rowElement.className = 'row';
 
+      // Create left button
       var leftButton = document.createElement('button');
       leftButton.innerText = '⬅️';
+      leftButton.setAttribute('data-row', row);
+      leftButton.addEventListener('click', (function(e) {
+        console.log(this, e.srcElement)
+      }).bind(this));
       rowElement.appendChild(leftButton);
 
       var pieceElements = [];
 
+      // Create inner pieces
       repeat(function() {
         var piece = document.createElement('span');
         piece.className = 'piece';
@@ -97,8 +104,13 @@
       // Keep a reference to the elements
       this.cubePieceElements.push(pieceElements);
 
+      // Create right button
       var rightButton = document.createElement('button');
       rightButton.innerText = '➡️';
+      rightButton.setAttribute('data-row', row);
+      rightButton.addEventListener('click', (function(e) {
+        console.log(this, e.srcElement)
+      }).bind(this));
       rowElement.appendChild(rightButton);
 
       return rowElement;
@@ -140,10 +152,13 @@
   window.FlatCube.prototype.updateView = function() {
     var currentFaceModel = this.cube.sides[this.lookingAt];
 
+    // Loop through the model
     for (var h = 0; h < currentFaceModel.length; h++) {
       for (var w = 0; w < currentFaceModel[h].length; w++) {
         var currentPiece = this.cubePieceElements[h][w];
         var colorIndex = currentFaceModel[h][w];
+
+        // Apply the correct background
         currentPiece.style.background = this.colors[colorIndex];
       }
     }
