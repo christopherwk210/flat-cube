@@ -3,6 +3,7 @@ body, html {
   overflow: hidden;
   margin: 0;
   background: linear-gradient(to bottom right, #FDEB71, #0396FF);
+  font-family: sans-serif;
 }
 
 #app {
@@ -10,4 +11,50 @@ body, html {
   justify-content: center;
   align-items: center;
   height: 100%;
+  user-select: none;
+}
+
+h1 {
+  position: absolute;
+  color: white;
+  width: 100%;
+  text-align: center;
+  top: 16px;
+  left: 0;
+  text-shadow: 0 4px 1em rgba(0,0,0,0.5);
+  font-size: 4em;
+}
+
+h1::selection {
+  background: #0396FF; 
+  color: #FDEB71;
+}
+
+h3 {
+  position: absolute;
+  color: white;
+  width: 100%;
+  text-align: center;
+  bottom: 16px;
+  left: 0;
+  text-shadow: 0 2px 1em rgba(0,0,0,0.5);
+  font-size: 2em;
+  font-weight: 100;
+}
+
+h3::selection, h3 *::selection {
+  color: #0396FF; 
+  background: #FDEB71;
+}
+
+a {
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  text-shadow: none;
+  transition: transform 1s;
+}
+
+a:hover {
+  transform: rotate(360deg);
 }
