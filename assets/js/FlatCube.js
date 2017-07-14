@@ -51,12 +51,12 @@
 
     // Options
     this.colors = e.colors || [
+      'white',
       'red',
-      'orange',
-      'yellow',
-      'green',
       'blue',
-      'violet'
+      'orange',
+      'green',
+      'yellow'
     ];
     this.width = e.width || 3;
     this.height = e.height || 3;
