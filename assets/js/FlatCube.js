@@ -98,6 +98,7 @@
    * Appends the proper cube face view into the DOM.
    */
   window.FlatCube.prototype.createCubeView = function(width, height, el) {
+    var selfRef = this;
     var container = document.createElement('div');
 
     /**
@@ -149,9 +150,10 @@
       var upButton = document.createElement('button');
       upButton.innerText = '⬆️';
       upButton.setAttribute('data-col', i);
-      upButton.addEventListener('click', (function(e) {
-        console.log(this, e.srcElement);
-      }).bind(this));
+      upButton.addEventListener('click', function(e) {
+        var col = e.srcElement.getAttribute('data-col');
+        selfRef.rotateColumn(col, true);
+      });
       topRowElement.appendChild(upButton);
     }, width);
     container.appendChild(topRowElement);
@@ -169,9 +171,10 @@
       var downButton = document.createElement('button');
       downButton.innerText = '⬇️';
       downButton.setAttribute('data-col', i);
-      downButton.addEventListener('click', (function(e) {
-        console.log(this, e.srcElement);
-      }).bind(this));
+      downButton.addEventListener('click', function(e) {
+        var col = e.srcElement.getAttribute('data-col');
+        selfRef.rotateColumn(col, false);
+      });
       bottomRowElement.appendChild(downButton);
     }, width);
     container.appendChild(bottomRowElement);
@@ -198,14 +201,37 @@
     }
   };
 
+  /**
+   * Rotates the given column in a direction
+   * @param {number} col The column to rotate
+   * @param {boolean} direction Rotate the column up if true, down if false
+   */
   window.FlatCube.prototype.rotateColumn = function(col, direction) {
+    var frontCol = getCol(this.cube.sides['front'], col),
+        topCol = getCol(this.cube.sides['top'], col),
+        backCol = getCol(this.cube.sides['back'], col),
+        bottomCol = getCol(this.cube.sides['bottom'], col),
+        leftCol = getCol(this.cube.sides['left'], col),
+        rightCol = getCol(this.cube.sides['right'], col);
+    
     switch(this.lookingAt) {
       case 'front': {
         if (direction) {
-          console.log(this.cube.sides['top'][col]);
+          setCol(this.cube.sides['front'], col, bottomCol);
+          setCol(this.cube.sides['top'], col, frontCol);
+          setCol(this.cube.sides['back'], col, topCol);
+          setCol(this.cube.sides['bottom'], col, backCol);
+        } else {
+          setCol(this.cube.sides['front'], col, topCol);
+          setCol(this.cube.sides['top'], col, backCol);
+          setCol(this.cube.sides['back'], col, bottomCol);
+          setCol(this.cube.sides['bottom'], col, frontCol);
         }
         break;
       }
     }
+
+    // Update View
+    this.updateView();
   };
 })();
