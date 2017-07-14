@@ -114,7 +114,8 @@
       leftButton.innerText = '⬅️';
       leftButton.setAttribute('data-row', row);
       leftButton.addEventListener('click', (function(e) {
-        console.log(this, e.srcElement);
+        var row = e.srcElement.getAttribute('data-row');
+        this.rotateRow(row, true);
       }).bind(this));
       rowElement.appendChild(leftButton);
 
@@ -136,7 +137,8 @@
       rightButton.innerText = '➡️';
       rightButton.setAttribute('data-row', row);
       rightButton.addEventListener('click', (function(e) {
-        console.log(this, e.srcElement);
+        var row = e.srcElement.getAttribute('data-row');
+        this.rotateRow(row, false);
       }).bind(this));
       rowElement.appendChild(rightButton);
 
@@ -234,4 +236,38 @@
     // Update View
     this.updateView();
   };
+
+  /**
+   * Rotates the given row in a direction
+   * @param {number} row The row to rotate
+   * @param {boolean} direction Rotate the row left if true, right if false
+   */
+  window.FlatCube.prototype.rotateRow = function(row, direction) {
+    var frontRow = this.cube.sides['front'][row],
+        topRow = this.cube.sides['top'][row],
+        backRow = this.cube.sides['back'][row],
+        bottomRow = this.cube.sides['bottom'][row],
+        leftRow = this.cube.sides['left'][row],
+        rightRow = this.cube.sides['right'][row];
+    
+    switch(this.lookingAt) {
+      case 'front': {
+        if (direction) {
+          this.cube.sides['front'][row] = rightRow;
+          this.cube.sides['left'][row] = frontRow;
+          this.cube.sides['back'][row] = leftRow;
+          this.cube.sides['right'][row] = backRow;
+        } else {
+          this.cube.sides['front'][row] = leftRow;
+          this.cube.sides['left'][row] = backRow;
+          this.cube.sides['back'][row] = rightRow;
+          this.cube.sides['right'][row] = frontRow;
+        }
+        break;
+      }
+    }
+
+    // Update View
+    this.updateView();
+  }
 })();
